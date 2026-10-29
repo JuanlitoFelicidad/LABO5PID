@@ -1,0 +1,15 @@
+# Compilation CMake
+build/
+cmake-build-*/
+
+# Fichiers compilés
+*.o
+*.obj
+*.exe
+
+# Fichiers temporaires
+*.tmp
+*.log
+
+# Configuration VS Code locale
+.vscode/
