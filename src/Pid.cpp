@@ -116,8 +116,42 @@ void Pid::reset()
 // -----------------------------------------------------------------------------
 double Pid::compute(double consigne, double mesure, double dt)
 {
-    (void)consigne;   // a retirer des que vous vous en servez
-    (void)mesure;
-    (void)dt;
-    return 0.0;
+     // 1. Calcul de l'erreur
+    double erreur = consigne - mesure;
+
+    // 2. Terme proportionnel
+    p_ = kp_ * erreur;
+
+    // 3. Terme integral
+    if (dt > 0.0) {
+        integrale_ += erreur * dt;
+    }
+    i_ = ki_ * integrale_;
+
+    // 4. Terme derive sur la mesure
+    d_ = 0.0;
+
+    if (!premiereMesure_ && dt > 0.0) {
+        d_ = -kd_ * (mesure - mesurePrecedente_) / dt;
+    }
+
+    // 5. Somme des trois termes
+    demande_ = p_ + i_ + d_;
+
+    // 6. Limitation de la commande
+    double sortie = demande_;
+
+    if (sortie > sortieMax_) {
+        sortie = sortieMax_;
+    }
+
+    if (sortie < sortieMin_) {
+        sortie = sortieMin_;
+    }
+
+    // 7. Memorisation pour le prochain calcul
+    mesurePrecedente_ = mesure;
+    premiereMesure_ = false;
+
+    return sortie;
 }
