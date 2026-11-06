@@ -60,16 +60,16 @@ const char* kEquipe = "Brit";
 // Etape 2 : DROITE, puis VIRAGE, puis COURBES_FORTES.
 // Etape 8 : DROITE, puis COURBES_LEGERES pour verifier chaque reglage.
 // Aux autres etapes : DROITE.
-const char* kRoute = "DROITE";
+const char* kRoute = "COURBES_LEGERES";
 
 // La vitesse de la voiture, en km/h. Etape 8 : 30.0, puis 100.0. Aux autres
 // etapes : 60.0.
-const double kVitesseKmh = 60.0;
+const double kVitesseKmh = 30.0;
 
 // L'ecart au depart, en metres : la voiture part a cote du centre (0.2 : a
 // gauche), et le regulateur doit l'y ramener.
 // 0.2 sur la ligne droite. 0.0 au virage, dans les courbes et a l'etape 3.
-const double kEcartInitialM = 0.0;
+const double kEcartInitialM = 0.2;
 
 // Etape 3 seulement : la consigne change, et la voiture change de voie.
 //   kVoieCibleM : la voie visee, en metres depuis le centre, positive a
@@ -79,9 +79,9 @@ const double kEcartInitialM = 0.0;
 //   kRampeMs : 0.0, la consigne change d'un coup. Sinon, elle glisse vers la
 //     voie visee a kRampeMs metres par seconde.
 // Apres l'etape 3 : les trois a 0.0, et kEcartInitialM a 0.2.
-const double kVoieCibleM = 3.5;
-const double kChangementDeVoieS = 2.0;
-const double kRampeMs = 1.0;           // etape 3, troisieme essai : 1.0
+const double kVoieCibleM = 0.0;
+const double kChangementDeVoieS = 0.0;
+const double kRampeMs = 0.0;           // etape 3, troisieme essai : 1.0
 
 // -----------------------------------------------------------------------------
 //  NE PAS CHANGER : les memes valeurs pour tous les essais et tout le groupe.

@@ -6,6 +6,7 @@
 // =============================================================================
 
 #include "Pid.h"
+#include <cmath>
 
 // -----------------------------------------------------------------------------
 //  FOURNI : range les gains et les bornes. La memoire part vide.
@@ -114,31 +115,73 @@ void Pid::reset()
 //
 //  Le P, le D, la somme et les bornes : comme au TODO 1.
 // -----------------------------------------------------------------------------
+
 double Pid::compute(double consigne, double mesure, double dt)
 {
-     // 1. Calcul de l'erreur
+    // 1. Calcul de l'erreur
     double erreur = consigne - mesure;
 
     // 2. Terme proportionnel
     p_ = kp_ * erreur;
 
-    // 3. Terme integral
-    if (dt > 0.0) {
-        integrale_ += erreur * dt;
-    }
-    i_ = ki_ * integrale_;
-
-    // 4. Terme derive sur la mesure
+    // 3. Terme derive sur la mesure
     d_ = 0.0;
 
     if (!premiereMesure_ && dt > 0.0) {
         d_ = -kd_ * (mesure - mesurePrecedente_) / dt;
     }
 
-    // 5. Somme des trois termes
+    // 4. Calcul de l'aire a ajouter au terme integral
+    double nouvelleAire = 0.0;
+
+    if (dt > 0.0) {
+        nouvelleAire = erreur * dt;
+    }
+
+    // 5. Protection contre l'emballement du terme integral
+    if (antiWindup_ == AntiWindup::None) {
+
+        // Aucune protection : on accumule toujours
+        integrale_ += nouvelleAire;
+    }
+    else if (antiWindup_ == AntiWindup::ConditionalIntegration) {
+
+        // On calcule la demande avec l'integrale candidate
+        double integraleCandidate = integrale_ + nouvelleAire;
+        double iCandidat = ki_ * integraleCandidate;
+
+        double demandeCandidate = p_ + iCandidat + d_;
+
+        // Detecter si l'erreur aggrave la saturation
+        bool saturationHaute =
+            demandeCandidate > sortieMax_ && erreur > 0.0;
+
+        bool saturationBasse =
+            demandeCandidate < sortieMin_ && erreur < 0.0;
+
+        // Accumuler seulement si l'erreur n'aggrave pas la saturation
+        if (!saturationHaute && !saturationBasse) {
+            integrale_ = integraleCandidate;
+        }
+    }
+    else if (antiWindup_ == AntiWindup::Band) {
+
+        // Hors de la bande : on efface la memoire du I
+        if (std::abs(erreur) > bande_) {
+            integrale_ = 0.0;
+        }
+        else {
+            integrale_ += nouvelleAire;
+        }
+    }
+
+    // 6. Terme integral definitif
+    i_ = ki_ * integrale_;
+
+    // 7. Somme des termes PID avant saturation
     demande_ = p_ + i_ + d_;
 
-    // 6. Limitation de la commande
+    // 8. Limitation de la commande
     double sortie = demande_;
 
     if (sortie > sortieMax_) {
@@ -149,9 +192,10 @@ double Pid::compute(double consigne, double mesure, double dt)
         sortie = sortieMin_;
     }
 
-    // 7. Memorisation pour le prochain calcul
+    // 9. Memorisation pour le prochain tic
     mesurePrecedente_ = mesure;
     premiereMesure_ = false;
 
     return sortie;
 }
+
