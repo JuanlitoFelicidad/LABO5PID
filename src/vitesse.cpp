@@ -62,15 +62,19 @@ namespace {
 const char* kEquipe = "Antho";
 
 // Le scenario. Etape 4 : ECHELON, puis PALIERS. Etape 7 : COLLINE.
+// DEBUT AIDE IA - ChatGPT (OpenAI, GPT-6)
 const char* kScenario = "COLLINE";
+// FIN AIDE IA - ChatGPT (OpenAI, GPT-6)
 
 // Les gains de la direction : la voiture reste sur sa voie pendant que vous
 // reglez la vitesse. Avant le premier essai, mettez vos gains de l'etape 2.
 // Les deux scenarios sont en ligne droite, avec un depart au centre : la
 // direction y travaille peu.
+// DEBUT AIDE IA - ChatGPT (OpenAI, GPT-6)
 const double kDirectionKp = 0.5;
 const double kDirectionKi = 0.3;
 const double kDirectionKd = 0.2;
+// FIN AIDE IA - ChatGPT (OpenAI, GPT-6)
 
 // -----------------------------------------------------------------------------
 //  NE PAS CHANGER : les memes valeurs pour tous les essais et tout le groupe.

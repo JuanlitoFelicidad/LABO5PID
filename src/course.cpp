@@ -60,26 +60,32 @@ const char* kScenario = "AUTOROUTE";
 // La direction : votre table de l'etape 8. Une ligne par vitesse : la vitesse
 // en km/h, puis Kp, Ki et Kd. Les vitesses en ordre croissant. Gardez les
 // vitesses; mettez les gains que vous avez regles a chaque vitesse.
+// DEBUT AIDE IA - ChatGPT (OpenAI, GPT-6)
 const GainPoint kTableDirection[] = {
     {30.0, 0.5, 0.3, 0.2},
     {60.0, 0.5, 0.3, 0.2},    // vos gains de l'etape 2
     {100.0, 0.5, 0.3, 0.1},
 };
+// FIN AIDE IA - ChatGPT (OpenAI, GPT-6)
 
 // La vitesse : vos reglages des etapes 4 et 7, les trois gains et la
 // protection du terme I. En ligne de commande : aucun, conditionnel ou bande.
 // Ici : None, ConditionalIntegration ou Band.
+// DEBUT AIDE IA - ChatGPT (OpenAI, GPT-6)
 const double kVitesseKp = 0.2;
 const double kVitesseKi = 0.01;
 const double kVitesseKd = 0.0;
 const Pid::AntiWindup kVitesseAnti = Pid::AntiWindup::ConditionalIntegration;
+// FIN AIDE IA - ChatGPT (OpenAI, GPT-6)
 
 // La rampe de l'etape 3, en metres par seconde : la consigne glisse vers la
 // voie du panneau. AUTOROUTE change de voie au chantier : a 1.0, les 3,5 m
 // prennent 3,5 s. Plus petit : plus doux, plus long, et l'ecart a la voie
 // visee monte dans le bilan. 0.0 : la consigne change d'un coup. A essayer a
 // l'etape 9, si vous voulez.
+// DEBUT AIDE IA - ChatGPT (OpenAI, GPT-6)
 const double kRampeMs = 1.0;
+// FIN AIDE IA - ChatGPT (OpenAI, GPT-6)
 
 // -----------------------------------------------------------------------------
 //  NE PAS CHANGER : les memes valeurs pour toutes les courses et tout le

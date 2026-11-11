@@ -118,6 +118,7 @@ void Pid::reset()
 
 double Pid::compute(double consigne, double mesure, double dt)
 {
+    // DEBUT AIDE IA - ChatGPT (OpenAI, GPT-6)
     // 1. Calcul de l'erreur
     double erreur = consigne - mesure;
 
@@ -137,7 +138,9 @@ double Pid::compute(double consigne, double mesure, double dt)
     if (dt > 0.0) {
         nouvelleAire = erreur * dt;
     }
+    // FIN AIDE IA - ChatGPT (OpenAI, GPT-6)
 
+    // DEBUT AIDE IA - ChatGPT (OpenAI, GPT-6)
     // 5. Protection contre l'emballement du terme integral
     if (antiWindup_ == AntiWindup::None) {
 
@@ -174,7 +177,9 @@ double Pid::compute(double consigne, double mesure, double dt)
             integrale_ += nouvelleAire;
         }
     }
+    // FIN AIDE IA - ChatGPT (OpenAI, GPT-6)
 
+    // DEBUT AIDE IA - ChatGPT (OpenAI, GPT-6)
     // 6. Terme integral definitif
     i_ = ki_ * integrale_;
 
@@ -197,5 +202,6 @@ double Pid::compute(double consigne, double mesure, double dt)
     premiereMesure_ = false;
 
     return sortie;
+    // FIN AIDE IA - ChatGPT (OpenAI, GPT-6)
 }
 
